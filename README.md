@@ -21,7 +21,7 @@ See the document of the [@abandonware/noble](https://github.com/abandonware/nobl
 sudo npm install -g @switchbot/homebridge-switchbot-ble
 ```
 You can also install it on the homebridge plugins page.
-![homebridge-plugins-search](https://github.com/SwitchBot/homebridge-switchbot-ble/image/homebridge-plugins-search.png)
+![homebridge-plugins-search](image/homebridge-plugins-search.png)
 
 ## Configuration
 Add this to your homebridge `config.json` file
