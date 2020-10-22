@@ -18,7 +18,7 @@ See the document of the [@abandonware/noble](https://github.com/abandonware/nobl
 
 ### Installing package
 ```sh
-npm install @switchbot/homebridge-switchbot-ble
+sudo npm install -g @switchbot/homebridge-switchbot-ble
 ```
 
 ## Configuration

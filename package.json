@@ -18,7 +18,7 @@
   "engines": {
     "homebridge": ">=1.0.0"
   },
-  "main": "dist/static-platform.js",
+  "main": "dist/switchbot-platform.js",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "rimraf ./dist && tsc",
@@ -31,7 +31,7 @@
     "switchbot",
     "ble"
   ],
-  "author": "Haydn Liao",
+  "author": "SwitchBot",
   "devDependencies": {
     "@types/node": "10.17.19",
     "homebridge": "^1.0.4",

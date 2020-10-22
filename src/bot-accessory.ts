@@ -10,9 +10,6 @@ import {
 } from "homebridge";
 import { rejects } from "assert";
 
-const SwitchBot = require('node-switchbot');
-const switchbot = new SwitchBot();
-
 export class Bot implements AccessoryPlugin {
 
   private readonly log: Logging;
@@ -41,6 +38,8 @@ export class Bot implements AccessoryPlugin {
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         const targetState = value as boolean;
+        const SwitchBot = require('node-switchbot');
+        const switchbot = new SwitchBot();
         switchbot.discover({ duration: this.scanDuration, model: 'H', quick: false }).then((device_list: any) => {
           log.info('Scan done.');
           let targetDevice: any = null;
