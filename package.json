@@ -1,0 +1,45 @@
+{
+  "name": "@switchbot/homebridge-switchbot-ble",
+  "version": "1.0.0",
+  "description": "Homebridge integration for SwitchBot BLE series products",
+  "license": "ISC",
+  "files": [
+    "LICENSE",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwitchBot/switchbot-homebridge-ble.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SwitchBot/switchbot-homebridge-ble/issues"
+  },
+  "homepage": "https://github.com/SwitchBot/switchbot-homebridge-ble#readme",
+  "engines": {
+    "homebridge": ">=1.0.0"
+  },
+  "main": "dist/static-platform.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "switchbot",
+    "ble"
+  ],
+  "author": "Haydn Liao",
+  "devDependencies": {
+    "@types/node": "10.17.19",
+    "homebridge": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@abandonware/noble": "^1.9.2-10",
+    "node-switchbot": "0.0.5"
+  }
+}
