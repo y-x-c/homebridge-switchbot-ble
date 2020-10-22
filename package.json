@@ -9,12 +9,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SwitchBot/switchbot-homebridge-ble.git"
+    "url": "git+https://github.com/SwitchBot/homebridge-switchbot-ble.git"
   },
   "bugs": {
-    "url": "https://github.com/SwitchBot/switchbot-homebridge-ble/issues"
+    "url": "https://github.com/SwitchBot/homebridge-switchbot-ble/issues"
   },
-  "homepage": "https://github.com/SwitchBot/switchbot-homebridge-ble#readme",
+  "homepage": "https://github.com/SwitchBot/homebridge-switchbot-ble#readme",
   "engines": {
     "homebridge": ">=1.0.0"
   },
