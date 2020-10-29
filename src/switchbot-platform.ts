@@ -1,5 +1,6 @@
 import { AccessoryPlugin, API, HAP, Logging, PlatformConfig, StaticPlatformPlugin, } from "homebridge";
 import { Bot } from "./bot-accessory";
+import { Curtain } from "./curtain-accessory";
 import { off } from "process";
 
 const PLATFORM_NAME = "SwitchBotPlatform";
@@ -55,16 +56,22 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
    * The set of exposed accessories CANNOT change over the lifetime of the plugin!
    */
   accessories(callback: (foundAccessories: AccessoryPlugin[]) => void): void {
-    this.log.info("this.config");
     let deviceList = [];
     for (var device of this.config.devices) {
       // this.log.info(device.type);
       // this.log.info(device.name);
       // this.log.info(device.bleMac);
       // this.log.info(device.scanDuration, typeof device.scanDuration);
-      if (device.type == 'bot') {
-        let scanDuration: number = device.scanDuration || 1000;
-        deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
+      let scanDuration: number = device.scanDuration || 1000;
+      switch (device.type) {
+        case 'bot':
+          deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
+          break;
+        case 'curtain':
+          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
+          break;
+        default:
+          break;
       }
     }
     this.log("Device amount:", deviceList.length.toString());
