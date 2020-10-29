@@ -7,6 +7,12 @@
 
 </span>
 
+The @switchbot/homebridge-switchbot-bleswitchbot is a nodejs module , and also a homebridge plug-in that directly controls SwitchBot products via BLE.
+
+Now supports:
+ * [SwitchBot (Bot)](https://www.switch-bot.com/products/switchbot-bot)
+ * [SwitchBot Curtain(Curtain)](https://www.switch-bot.com/products/switchbot-curtain)
+
 
 ## Installation
 ### Installing bluetooth libraries
@@ -50,6 +56,12 @@ If it work, add devices.
                 "name": "Bot 51",
                 "bleMac": "e7:4d:36:cf:9e:51",
                 "scanDuration": 2000
+            },
+            {
+                "type": "curtain",
+                "name": "Curtain 11",
+                "bleMac": "ec:58:c5:d0:01:11",
+                "scanDuration": 2000
             }
         ]
     }
@@ -58,9 +70,21 @@ If it work, add devices.
 
 **Requird Settings**
 * `devices` - SwitchBot devices list.
-* `type` - Device type. Currently only `bot` is supported.
+* `type` - Device type. Currently only supports `bot` and `curtain`.
 * `name` - Device name.
 * `bleMac` - Device mac address. You can find it in App settings.
 
 **Optional Settings**
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
+
+## Release-Note
+* v1.1.0 (2020-10-29)
+  * Add support for Curtain.
+* v1.0.1 (2020-10-22)
+  * First public release, supports Bot.
+
+## Community
+
+* [SwitchBot (Official website)](https://www.switch-bot.com/)
+* [Facebook @SwitchBotRobot](https://www.facebook.com/SwitchBotRobot/) 
+* [Twitter @SwitchBot](https://twitter.com/switchbot) 
