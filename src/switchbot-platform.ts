@@ -68,7 +68,8 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
           deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
           break;
         case 'curtain':
-          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
+          const positionInverted = device.positionInverted || false;
+          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, positionInverted));
           break;
         default:
           break;
