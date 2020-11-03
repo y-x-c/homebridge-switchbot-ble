@@ -15,6 +15,7 @@ export class Curtain implements AccessoryPlugin {
   private readonly log: Logging;
   private readonly bleMac: string;
   private readonly scanDuration: number;
+  private readonly positionInverted: boolean;
 
   private currentPosition = 0;
   private targetPosition = 0;
@@ -26,11 +27,12 @@ export class Curtain implements AccessoryPlugin {
   private readonly curtainService: Service;
   private readonly informationService: Service;
 
-  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number) {
+  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, positionInverted: boolean) {
     this.log = log;
     this.name = name;
     this.bleMac = bleMac;
     this.scanDuration = scanDuration;
+    this.positionInverted = positionInverted;
 
     this.positionStatus = 2;
 
@@ -87,7 +89,12 @@ export class Curtain implements AccessoryPlugin {
                 // log.info('Disconnected.');
               };
               log.info('The Curtain is moving...');
-              return targetDevice.runToPos(this.targetPosition);
+              let adjustedTargetPosition = this.targetPosition;
+              if (this.positionInverted) {
+                log.info('Target position inverted');
+                adjustedTargetPosition = 100 - this.targetPosition;
+              }
+              return targetDevice.runToPos(adjustedTargetPosition);
             }
           }).then(() => {
             log.info('Done.');
