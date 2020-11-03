@@ -76,6 +76,7 @@ If it work, add devices.
 
 **Optional Settings**
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
+* `positionInverted` - Invert the position of curtain. Set to `true` in case "open" & "close" need to be swapped.
 
 ## Release-Note
 * v1.1.0 (2020-10-29)
