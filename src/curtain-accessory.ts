@@ -39,7 +39,7 @@ export class Curtain implements AccessoryPlugin {
     this.curtainService = new hap.Service.WindowCovering(name);
     this.curtainService.getCharacteristic(hap.Characteristic.CurrentPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current position of the Curtain was returned: " + this.currentPosition + "%");
+        // log.info("Current position of the Curtain was returned: " + this.currentPosition + "%");
         callback(undefined, this.currentPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -49,7 +49,7 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.TargetPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Target position of the Curtain was returned: " + this.targetPosition + "%");
+        // log.info("Target position of the Curtain was returned: " + this.targetPosition + "%");
         callback(undefined, this.targetPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -74,9 +74,9 @@ export class Curtain implements AccessoryPlugin {
               }
             }
             if (!targetDevice) {
-              log.info('No device was found.');
+              log.info(targetDevice.modelName + ' (' + targetDevice.address + ') was not found.');
               return new Promise((resolve, reject) => {
-                reject(new Error('No device was found.'));
+                reject(new Error('No target device was found.'));
               });
             }
             else {
@@ -119,7 +119,7 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.PositionState)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("The position state of the Curtain was returned: " + this.positionStatus);
+        // log.info("The position state of the Curtain was returned: " + this.positionStatus);
         callback(undefined, this.positionStatus);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {

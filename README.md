@@ -79,7 +79,13 @@ If it work, add devices.
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
 * `reverseDir` - Set to `true` to exchange the "opened" and "closed" directions of Curtain after calibration. Default is `false`. So you can swap the directions without recalibration.
 
-## Release-Note
+Please note that:
+
+1. The device `name` cannot be the same.
+2. Restart HomeBridge after updating the config file.
+3. The "opened" and "closed" directions of HomeKit are the same as those in Curtain and SwitchBot APP, but the percentage definitions are different. "Closed" is 0% in HomeKit but 100% in Curtain and APP.
+
+## Release Note
 * v1.1.0 (2020-10-29)
   * Add support for Curtain.
 * v1.0.1 (2020-10-22)
