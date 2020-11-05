@@ -61,7 +61,8 @@ If it work, add devices.
                 "type": "curtain",
                 "name": "Curtain 11",
                 "bleMac": "ec:58:c5:d0:01:11",
-                "scanDuration": 2000
+                "scanDuration": 2000,
+                "reverseDir": false
             }
         ]
     }
@@ -76,7 +77,7 @@ If it work, add devices.
 
 **Optional Settings**
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
-* `positionInverted` - Invert the position of curtain. Set to `true` in case "open" & "close" need to be swapped.
+* `reverseDir` - Set to `true` to exchange the "opened" and "closed" directions of Curtain after calibration. Default is `false`. So you can swap the directions without recalibration.
 
 ## Release-Note
 * v1.1.0 (2020-10-29)

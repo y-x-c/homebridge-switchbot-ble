@@ -15,7 +15,7 @@ export class Curtain implements AccessoryPlugin {
   private readonly log: Logging;
   private readonly bleMac: string;
   private readonly scanDuration: number;
-  private readonly positionInverted: boolean;
+  private readonly reverseDir: boolean;
 
   private currentPosition = 0;
   private targetPosition = 0;
@@ -27,12 +27,12 @@ export class Curtain implements AccessoryPlugin {
   private readonly curtainService: Service;
   private readonly informationService: Service;
 
-  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, positionInverted: boolean) {
+  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, reverseDir: boolean) {
     this.log = log;
     this.name = name;
     this.bleMac = bleMac;
     this.scanDuration = scanDuration;
-    this.positionInverted = positionInverted;
+    this.reverseDir = reverseDir;
 
     this.positionStatus = 2;
 
@@ -89,12 +89,19 @@ export class Curtain implements AccessoryPlugin {
                 // log.info('Disconnected.');
               };
               log.info('The Curtain is moving...');
-              let adjustedTargetPosition = this.targetPosition;
-              if (this.positionInverted) {
-                log.info('Target position inverted');
-                adjustedTargetPosition = 100 - this.targetPosition;
+              /**opend - 0% in HomeKit, 100% in Curtain device.
+               * closed - 100% in HomeKit, 0% in Curtain device.
+               * To keep the status synchronized, convert the percentage of homekit to the percentage of curtain.
+               */
+              let covertToDevicePosition = 0;
+              if (!reverseDir) {
+                covertToDevicePosition = 100 - this.targetPosition;
               }
-              return targetDevice.runToPos(adjustedTargetPosition);
+              else {
+                log.info('Reverse the "opened" and "closed" directions!');
+                covertToDevicePosition = this.targetPosition;
+              }
+              return targetDevice.runToPos(covertToDevicePosition);
             }
           }).then(() => {
             log.info('Done.');
