@@ -1,6 +1,7 @@
 import { AccessoryPlugin, API, HAP, Logging, PlatformConfig, StaticPlatformPlugin, } from "homebridge";
 import { Bot } from "./bot-accessory";
 import { Curtain } from "./curtain-accessory";
+import { Meter } from "./meter-accessory";
 import { off } from "process";
 
 const PLATFORM_NAME = "SwitchBotPlatform";
@@ -70,6 +71,13 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
         case 'curtain':
           const reverseDir: boolean = device.reverseDir || false;
           deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, reverseDir));
+          break;
+        case 'meter':
+          let scanInterval: number = device.scanInterval || 60000;
+          if (scanInterval < scanDuration) {
+            scanInterval = scanDuration + 1000;
+          }
+          deviceList.push(new Meter(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, scanInterval));
           break;
         default:
           break;

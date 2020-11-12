@@ -63,6 +63,13 @@ If it work, add devices.
                 "bleMac": "ec:58:c5:d0:01:11",
                 "scanDuration": 2000,
                 "reverseDir": false
+            },
+            {
+                "type": "meter",
+                "name": "Meter 84",
+                "bleMac": "d0:d5:64:14:43:84",
+                "scanDuration": 5000,
+                "scanInterval": 60000
             }
         ]
     }
@@ -71,13 +78,14 @@ If it work, add devices.
 
 **Requird Settings**
 * `devices` - SwitchBot devices list.
-* `type` - Device type. Currently only supports `bot` and `curtain`.
+* `type` - Device type. Currently supports `bot`, `curtain` and `meter`.
 * `name` - Device name.
 * `bleMac` - Device mac address. You can find it in App settings.
 
 **Optional Settings**
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
 * `reverseDir` - Set to `true` to exchange the "opened" and "closed" directions of Curtain after calibration. Default is `false`. So you can swap the directions without recalibration.
+* `scanInterval` - Scan interval. Currently indicates the cycle of updating the temperature and humidity value of Meter. Default is `60000`(unit: ms).
 
 Please note that:
 
@@ -88,7 +96,7 @@ Please note that:
 ## Release Note
 * v1.2.0 (2020-11-6)
   * Add option for inverted curtain position. (Thanks to [@whatUwant](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/4))
-  * Fixed HomeKit control direction reversal issue.
+  * Fixed HomeKit control direction reversal issue. (Thanks to [@roddenshaw](https://github.com/SwitchBot/homebridge-switchbot-ble/issues/5))
 * v1.1.0 (2020-10-29)
   * Add support for Curtain.
 * v1.0.1 (2020-10-22)
