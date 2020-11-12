@@ -94,6 +94,8 @@ Please note that:
 3. The "opened" and "closed" directions of HomeKit are the same as those in Curtain and SwitchBot APP, but the percentage definitions are different. "Closed" is 0% in HomeKit but 100% in Curtain and APP.
 
 ## Release Note
+* v1.2.1 (2020-11-12)
+  * Get temperature and humidity from Meter advertising periodically.
 * v1.2.0 (2020-11-6)
   * Add option for inverted curtain position. (Thanks to [@whatUwant](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/4))
   * Fixed HomeKit control direction reversal issue. (Thanks to [@roddenshaw](https://github.com/SwitchBot/homebridge-switchbot-ble/issues/5))
