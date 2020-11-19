@@ -16,10 +16,12 @@ export class Curtain implements AccessoryPlugin {
   private readonly bleMac: string;
   private readonly scanDuration: number;
   private readonly reverseDir: boolean;
+  private readonly moveTime: number;
 
   private currentPosition = 0;
   private targetPosition = 0;
-  private positionStatus = 0;
+  private positionState = 0;
+  private moveTimer!: NodeJS.Timeout;
 
   // This property must be existent!!
   name: string;
@@ -27,24 +29,21 @@ export class Curtain implements AccessoryPlugin {
   private readonly curtainService: Service;
   private readonly informationService: Service;
 
-  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, reverseDir: boolean) {
+  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, reverseDir: boolean, moveTime: number) {
     this.log = log;
     this.name = name;
     this.bleMac = bleMac;
     this.scanDuration = scanDuration;
     this.reverseDir = reverseDir;
+    this.moveTime = moveTime;
 
-    this.positionStatus = 2;
+    this.positionState = hap.Characteristic.PositionState.STOPPED;
 
     this.curtainService = new hap.Service.WindowCovering(name);
     this.curtainService.getCharacteristic(hap.Characteristic.CurrentPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
         log.info("Current position of the Curtain was returned: " + this.currentPosition + "%");
         callback(undefined, this.currentPosition);
-      })
-      .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        log.info("Current position of the Curtain can't be set!");
-        callback();
       });
 
     this.curtainService.getCharacteristic(hap.Characteristic.TargetPosition)
@@ -53,14 +52,26 @@ export class Curtain implements AccessoryPlugin {
         callback(undefined, this.targetPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        const targetPosition = value as number;
-        log.info("Target position of the Curtain setting: " + targetPosition + "%");
-        if (targetPosition === this.targetPosition) {
+        this.targetPosition = value as number;
+        log.info("Target position of the Curtain setting: " + this.targetPosition + "%");
+        clearTimeout(this.moveTimer);
+        if (this.targetPosition > this.currentPosition) {
+          this.positionState = hap.Characteristic.PositionState.INCREASING;
+        }
+        else if (this.targetPosition < this.currentPosition) {
+          this.positionState = hap.Characteristic.PositionState.DECREASING;
+        }
+        else {
+          this.positionState = hap.Characteristic.PositionState.STOPPED;
+        }
+
+        if (this.positionState === hap.Characteristic.PositionState.STOPPED) {
+          this.curtainService?.getCharacteristic(hap.Characteristic.TargetPosition).updateValue(this.targetPosition);
+          this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
+          this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
           callback();
         }
         else {
-          this.targetPosition = targetPosition;
-
           const SwitchBot = require('node-switchbot');
           const switchbot = new SwitchBot();
           switchbot.discover({ duration: this.scanDuration, model: 'c', quick: false }).then((device_list: any) => {
@@ -105,12 +116,25 @@ export class Curtain implements AccessoryPlugin {
             }
           }).then(() => {
             log.info('Done.');
-            this.currentPosition = this.targetPosition;
             log.info("Target position of the Curtain has been set to: " + this.targetPosition + "%");
+            this.moveTimer = setTimeout(() => {
+              // log.info("setTimeout", this.positionState.toString(), this.currentPosition.toString(), this.targetPosition.toString());
+              this.currentPosition = this.targetPosition;
+              this.positionState = hap.Characteristic.PositionState.STOPPED;
+              // this.curtainService?.getCharacteristic(hap.Characteristic.TargetPosition).updateValue(this.targetPosition);
+              this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
+              this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
+            }, this.moveTime);
             callback();
           }).catch((error: any) => {
             log.error(error);
-            this.targetPosition = this.currentPosition;
+            this.moveTimer = setTimeout(() => {
+              this.targetPosition = this.currentPosition;
+              this.positionState = hap.Characteristic.PositionState.STOPPED;
+              this.curtainService?.getCharacteristic(hap.Characteristic.TargetPosition).updateValue(this.targetPosition);
+              // this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
+              this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
+            }, 1000);
             log.info("Target position of the Curtain setting failed!");
             callback();
           });
@@ -119,12 +143,8 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.PositionState)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        // log.info("The position state of the Curtain was returned: " + this.positionStatus);
-        callback(undefined, this.positionStatus);
-      })
-      .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        log.info("The position state of the Curtain can't be set!");
-        callback();
+        log.info("The position state of the Curtain was returned: " + this.positionState);
+        callback(undefined, this.positionState);
       });
 
     this.informationService = new hap.Service.AccessoryInformation()

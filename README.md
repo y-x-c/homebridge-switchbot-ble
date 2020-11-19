@@ -62,7 +62,8 @@ If it work, add devices.
                 "name": "Curtain 11",
                 "bleMac": "ec:58:c5:d0:01:11",
                 "scanDuration": 2000,
-                "reverseDir": false
+                "reverseDir": false,
+                "moveTime": 2000
             },
             {
                 "type": "meter",
@@ -85,6 +86,7 @@ If it work, add devices.
 **Optional Settings**
 * `scanDuration` - Scan timeout. BLE Central must first scan the advertising. Default is `1000`(unit: ms). Longer time to ensure device discovery but slower response.
 * `reverseDir` - Set to `true` to exchange the "opened" and "closed" directions of Curtain after calibration. Default is `false`. So you can swap the directions without recalibration.
+* `moveTime` - Set the actual running time of Curtian, which is also the time to switch from running state to opened/closeed state in the Home APP. Default is `2000`(unit: ms).
 * `scanInterval` - Scan interval. Currently indicates the cycle of updating the temperature and humidity value of Meter. Default is `60000`(unit: ms).
 
 Please note that:

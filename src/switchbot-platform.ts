@@ -70,7 +70,8 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
           break;
         case 'curtain':
           const reverseDir: boolean = device.reverseDir || false;
-          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, reverseDir));
+          const moveTime: number = device.moveTime || 2000;
+          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, reverseDir, moveTime));
           break;
         case 'meter':
           let scanInterval: number = device.scanInterval || 60000;
