@@ -1,6 +1,6 @@
 {
   "name": "@switchbot/homebridge-switchbot-ble",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Homebridge integration for SwitchBot BLE series products",
   "license": "ISC",
   "files": [
@@ -33,7 +33,7 @@
   ],
   "author": "SwitchBot",
   "devDependencies": {
-    "@types/node": "14.14.7",
+    "@types/node": "14.14.8",
     "homebridge": "^1.1.6",
     "rimraf": "^3.0.2",
     "typescript": "^4.0.5"
