@@ -74,7 +74,7 @@ export class Bot implements AccessoryPlugin {
           log.info("Switch state has been set to: " + (this.switchOn ? "ON" : "OFF"));
           callback();
         }).catch((error: any) => {
-          log.info("Switch state setting failed: " + (value ? "ON" : "OFF"));
+          log.info("Switch state failed to be set to: " + (value ? "ON" : "OFF"));
           log.error(error);
           callback();
         });

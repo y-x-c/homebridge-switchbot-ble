@@ -135,7 +135,7 @@ export class Curtain implements AccessoryPlugin {
               // this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
               this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
             }, 1000);
-            log.info("Target position of the Curtain setting failed!");
+            log.info("Target position of the Curtain failed to be set to: " + this.targetPosition + "%");
             callback();
           });
         }
