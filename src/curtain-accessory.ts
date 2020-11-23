@@ -42,18 +42,18 @@ export class Curtain implements AccessoryPlugin {
     this.curtainService = new hap.Service.WindowCovering(name);
     this.curtainService.getCharacteristic(hap.Characteristic.CurrentPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current position of the Curtain was returned: " + this.currentPosition + "%");
+        log.info("Current position of the curtain was returned: " + this.currentPosition + "%");
         callback(undefined, this.currentPosition);
       });
 
     this.curtainService.getCharacteristic(hap.Characteristic.TargetPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Target position of the Curtain was returned: " + this.targetPosition + "%");
+        log.info("Target position of the curtain was returned: " + this.targetPosition + "%");
         callback(undefined, this.targetPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         this.targetPosition = value as number;
-        log.info("Target position of the Curtain setting: " + this.targetPosition + "%");
+        log.info("Target position of the curtain setting: " + this.targetPosition + "%");
         clearTimeout(this.moveTimer);
         if (this.targetPosition > this.currentPosition) {
           this.positionState = hap.Characteristic.PositionState.INCREASING;
@@ -99,7 +99,7 @@ export class Curtain implements AccessoryPlugin {
               targetDevice.ondisconnect = () => {
                 // log.info('Disconnected.');
               };
-              log.info('The Curtain is moving...');
+              log.info('The curtain is moving...');
               /**opend - 0% in HomeKit, 100% in Curtain device.
                * closed - 100% in HomeKit, 0% in Curtain device.
                * To keep the status synchronized, convert the percentage of homekit to the percentage of curtain.
@@ -116,7 +116,7 @@ export class Curtain implements AccessoryPlugin {
             }
           }).then(() => {
             log.info('Done.');
-            log.info("Target position of the Curtain has been set to: " + this.targetPosition + "%");
+            log.info("Target position of the curtain has been set to: " + this.targetPosition + "%");
             this.moveTimer = setTimeout(() => {
               // log.info("setTimeout", this.positionState.toString(), this.currentPosition.toString(), this.targetPosition.toString());
               this.currentPosition = this.targetPosition;
@@ -135,7 +135,7 @@ export class Curtain implements AccessoryPlugin {
               // this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
               this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
             }, 1000);
-            log.info("Target position of the Curtain failed to be set to: " + this.targetPosition + "%");
+            log.info("Target position of the curtain failed to be set to: " + this.targetPosition + "%");
             callback();
           });
         }
@@ -143,7 +143,7 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.PositionState)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("The position state of the Curtain was returned: " + this.positionState);
+        log.info("The position state of the curtain was returned: " + this.positionState);
         callback(undefined, this.positionState);
       });
 
