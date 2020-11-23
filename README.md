@@ -7,12 +7,12 @@
 
 </span>
 
-The @switchbot/homebridge-switchbot-bleswitchbot is a nodejs module , and also a homebridge plug-in that directly controls SwitchBot products via BLE.
+The @switchbot/homebridge-switchbot-ble is a nodejs module , and also a homebridge plug-in that directly controls SwitchBot products via BLE.
 
 Now supports:
  * [SwitchBot (Bot)](https://www.switch-bot.com/products/switchbot-bot)
- * [SwitchBot Curtain(Curtain)](https://www.switch-bot.com/products/switchbot-curtain)
-
+ * [SwitchBot Curtain (Curtain)](https://www.switch-bot.com/products/switchbot-curtain)
+ * [SwitchBot Meter (Meter)](https://www.switch-bot.com/products/switchbot-meter)
 
 ## Installation
 ### Installing bluetooth libraries
