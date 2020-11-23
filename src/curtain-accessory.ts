@@ -152,7 +152,7 @@ export class Curtain implements AccessoryPlugin {
       .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-CURTAIN-W0701600")
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info("Example switch '%s' created!", name);
+    log.info("Example curtain '%s' created!", name);
   }
 
   /*
