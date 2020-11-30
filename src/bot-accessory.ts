@@ -21,7 +21,7 @@ export class Bot implements AccessoryPlugin {
   // This property must be existent!!
   name: string;
 
-  private readonly switchService: Service;
+  private readonly botService: Service;
   private readonly informationService: Service;
 
   constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number) {
@@ -30,10 +30,10 @@ export class Bot implements AccessoryPlugin {
     this.bleMac = bleMac;
     this.scanDuration = scanDuration;
 
-    this.switchService = new hap.Service.Switch(name);
-    this.switchService.getCharacteristic(hap.Characteristic.On)
+    this.botService = new hap.Service.Switch(name);
+    this.botService.getCharacteristic(hap.Characteristic.On)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current state of the switch was returned: " + (this.switchOn ? "ON" : "OFF"));
+        log.info("Current state of Bot was returned: " + (this.switchOn ? "ON" : "OFF"));
         callback(undefined, this.switchOn);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -65,16 +65,16 @@ export class Bot implements AccessoryPlugin {
             targetDevice.ondisconnect = () => {
               // log.info('Disconnected.');
             };
-            log.info('Pressing the switch...');
+            log.info('Bot is Pressing...');
             return targetDevice.press();
           }
         }).then(() => {
           log.info('Done.');
           this.switchOn = value as boolean;
-          log.info("Switch state has been set to: " + (this.switchOn ? "ON" : "OFF"));
+          log.info("Bot state has been set to: " + (this.switchOn ? "ON" : "OFF"));
           callback();
         }).catch((error: any) => {
-          log.info("Switch state failed to be set to: " + (value ? "ON" : "OFF"));
+          log.info("Bot state failed to be set to: " + (value ? "ON" : "OFF"));
           log.error(error);
           callback();
         });
@@ -85,7 +85,7 @@ export class Bot implements AccessoryPlugin {
       .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-S1")
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info("Example switch '%s' created!", name);
+    log.info("Bot '%s' created!", name);
   }
 
   /*
@@ -103,7 +103,7 @@ export class Bot implements AccessoryPlugin {
   getServices(): Service[] {
     return [
       this.informationService,
-      this.switchService,
+      this.botService,
     ];
   }
 
