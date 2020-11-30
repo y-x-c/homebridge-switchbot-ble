@@ -12,7 +12,7 @@ The @switchbot/homebridge-switchbot-ble is a nodejs module , and also a homebrid
 Now supports:
  * [SwitchBot (Bot)](https://www.switch-bot.com/products/switchbot-bot)
  * [SwitchBot Curtain (Curtain)](https://www.switch-bot.com/products/switchbot-curtain)
- * [SwitchBot Meter (Meter)](https://www.switch-bot.com/products/switchbot-meter)
+ * [SwitchBot Thermometer & Hygrometer (Meter)](https://www.switch-bot.com/products/switchbot-meter)
 
 ## Installation
 ### Installing bluetooth libraries
@@ -96,6 +96,9 @@ Please note that:
 3. The "opened" and "closed" directions of HomeKit are the same as those in Curtain and SwitchBot APP, but the percentage definitions are different. "Closed" is 0% in HomeKit but 100% in Curtain and APP.
 
 ## Release Note
+* v1.2.3 (2020-11-30)
+  * Fixed the incorrect state of Bot in Home APP when control fails.
+  * Modify log messages. (Thanks to [@dnicolson](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/15))
 * v1.2.2 (2020-11-19)
   * Fixed Curtain state will not be updated in the Home APP.
 * v1.2.1 (2020-11-12)
