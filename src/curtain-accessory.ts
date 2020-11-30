@@ -42,18 +42,18 @@ export class Curtain implements AccessoryPlugin {
     this.curtainService = new hap.Service.WindowCovering(name);
     this.curtainService.getCharacteristic(hap.Characteristic.CurrentPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current position of the Curtain was returned: " + this.currentPosition + "%");
+        log.info("Current position of Curtain was returned: " + this.currentPosition + "%");
         callback(undefined, this.currentPosition);
       });
 
     this.curtainService.getCharacteristic(hap.Characteristic.TargetPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Target position of the Curtain was returned: " + this.targetPosition + "%");
+        log.info("Target position of Curtain was returned: " + this.targetPosition + "%");
         callback(undefined, this.targetPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         this.targetPosition = value as number;
-        log.info("Target position of the Curtain setting: " + this.targetPosition + "%");
+        log.info("Target position of Curtain setting: " + this.targetPosition + "%");
         clearTimeout(this.moveTimer);
         if (this.targetPosition > this.currentPosition) {
           this.positionState = hap.Characteristic.PositionState.INCREASING;
@@ -99,10 +99,10 @@ export class Curtain implements AccessoryPlugin {
               targetDevice.ondisconnect = () => {
                 // log.info('Disconnected.');
               };
-              log.info('The Curtain is moving...');
+              log.info('Curtain is moving...');
               /**opend - 0% in HomeKit, 100% in Curtain device.
                * closed - 100% in HomeKit, 0% in Curtain device.
-               * To keep the status synchronized, convert the percentage of homekit to the percentage of curtain.
+               * To keep the status synchronized, convert the percentage of homekit to the percentage of Curtain.
                */
               let covertToDevicePosition = 0;
               if (!reverseDir) {
@@ -116,7 +116,7 @@ export class Curtain implements AccessoryPlugin {
             }
           }).then(() => {
             log.info('Done.');
-            log.info("Target position of the Curtain has been set to: " + this.targetPosition + "%");
+            log.info("Target position of Curtain has been set to: " + this.targetPosition + "%");
             this.moveTimer = setTimeout(() => {
               // log.info("setTimeout", this.positionState.toString(), this.currentPosition.toString(), this.targetPosition.toString());
               this.currentPosition = this.targetPosition;
@@ -135,7 +135,7 @@ export class Curtain implements AccessoryPlugin {
               // this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
               this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
             }, 1000);
-            log.info("Target position of the Curtain setting failed!");
+            log.info("Target position of Curtain failed to be set to: " + this.targetPosition + "%");
             callback();
           });
         }
@@ -143,7 +143,7 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.PositionState)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("The position state of the Curtain was returned: " + this.positionState);
+        log.info("The position state of Curtain was returned: " + this.positionState);
         callback(undefined, this.positionState);
       });
 
@@ -152,7 +152,7 @@ export class Curtain implements AccessoryPlugin {
       .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-CURTAIN-W0701600")
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info("Example switch '%s' created!", name);
+    log.info("Curtain '%s' created!", name);
   }
 
   /*
