@@ -17,6 +17,7 @@ export class Bot implements AccessoryPlugin {
   private readonly scanDuration: number;
 
   private switchOn = false;
+  private runTimer!: NodeJS.Timeout;
 
   // This property must be existent!!
   name: string;
@@ -38,6 +39,14 @@ export class Bot implements AccessoryPlugin {
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         const targetState = value as boolean;
+        clearTimeout(this.runTimer);
+        if (targetState === this.switchOn) {
+          log.info("Target state of Bot has not changed: " + (this.switchOn ? "ON" : "OFF"));
+          this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
+          callback();
+        }
+        // Target state has been changed.
+        log.info("Target state of Bot setting: " + (targetState ? "ON" : "OFF"));
         const SwitchBot = require('node-switchbot');
         const switchbot = new SwitchBot();
         switchbot.discover({ duration: this.scanDuration, model: 'H', quick: false }).then((device_list: any) => {
@@ -65,17 +74,28 @@ export class Bot implements AccessoryPlugin {
             targetDevice.ondisconnect = () => {
               // log.info('Disconnected.');
             };
-            log.info('Bot is Pressing...');
-            return targetDevice.press();
+            log.info('Bot is running...');
+            if (targetState) {
+              return targetDevice.turnOn();
+            }
+            else {
+              return targetDevice.turnOff();
+            }
           }
         }).then(() => {
           log.info('Done.');
-          this.switchOn = value as boolean;
+          this.switchOn = targetState;
+          this.runTimer = setTimeout(() => {
+            this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
+          }, 500);
           log.info("Bot state has been set to: " + (this.switchOn ? "ON" : "OFF"));
           callback();
         }).catch((error: any) => {
-          log.info("Bot state failed to be set to: " + (value ? "ON" : "OFF"));
           log.error(error);
+          this.runTimer = setTimeout(() => {
+            this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
+          }, 500);
+          log.info("Bot state failed to be set to: " + (targetState ? "ON" : "OFF"));
           callback();
         });
       });
