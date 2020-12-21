@@ -1,11 +1,10 @@
-/* eslint-disable no-case-declarations */
-import { AccessoryPlugin, API, HAP, Logging, PlatformConfig, StaticPlatformPlugin } from 'homebridge';
-import { Bot } from './bot-accessory';
-import { Curtain } from './curtain-accessory';
-import { Meter } from './meter-accessory';
-import { off } from 'process';
+import { AccessoryPlugin, API, HAP, Logging, PlatformConfig, StaticPlatformPlugin, } from "homebridge";
+import { Bot } from "./bot-accessory";
+import { Curtain } from "./curtain-accessory";
+import { Meter } from "./meter-accessory";
+import { off } from "process";
 
-const PLATFORM_NAME = 'SwitchBotPlatform';
+const PLATFORM_NAME = "SwitchBotPlatform";
 
 /*
  * IMPORTANT NOTICE
@@ -42,13 +41,13 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
   private readonly log: Logging;
   private readonly config: PlatformConfig;
 
-  constructor(log: Logging, config: PlatformConfig, _api: API) {
+  constructor(log: Logging, config: PlatformConfig, api: API) {
     this.log = log;
 
     // probably parse config or something here
     this.config = config;
 
-    log.info('SwitchBot platform finished initializing!');
+    log.info("SwitchBot platform finished initializing!");
   }
 
   /*
@@ -58,14 +57,14 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
    * The set of exposed accessories CANNOT change over the lifetime of the plugin!
    */
   accessories(callback: (foundAccessories: AccessoryPlugin[]) => void): void {
-    const deviceList = [];
+    let deviceList = [];
     if (this.config.devices) {
-      for (const device of this.config.devices) {
+      for (var device of this.config.devices) {
         // this.log.info(device.type);
         // this.log.info(device.name);
         // this.log.info(device.bleMac);
         // this.log.info(device.scanDuration, typeof device.scanDuration);
-        const scanDuration: number = device.scanDuration || 1000;
+        let scanDuration: number = device.scanDuration || 1000;
         switch (device.type) {
           case 'bot':
             deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
@@ -87,9 +86,9 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
         }
       }
     } else {
-      this.log.error('No Device Set In Config');
+      this.log.error('No Device Set In Config')
     }
-    this.log('Device amount:', deviceList.length.toString());
+    this.log("Device amount:", deviceList.length.toString());
     callback(deviceList);
   }
 }

@@ -6,9 +6,9 @@ import {
   HAP,
   Logging,
   Service,
-  CharacteristicEventTypes,
-} from 'homebridge';
-import { rejects } from 'assert';
+  CharacteristicEventTypes
+} from "homebridge";
+import { rejects } from "assert";
 
 export class Meter implements AccessoryPlugin {
 
@@ -17,8 +17,8 @@ export class Meter implements AccessoryPlugin {
   private readonly scanDuration: number;
   private readonly scanInterval: number;
 
-  private temperature = 0;
-  private humidity = 0;
+  private temperature: number = 0;
+  private humidity: number = 0;
 
   // This property must be existent!!
   name: string;
@@ -37,31 +37,31 @@ export class Meter implements AccessoryPlugin {
     this.temperatureSercice = new hap.Service.TemperatureSensor(name);
     this.temperatureSercice.getCharacteristic(hap.Characteristic.CurrentTemperature)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info(name + ' current temperature: ' + this.temperature + '\u2103');
+        log.info(name + " current temperature: " + this.temperature + "\u2103");
         callback(undefined, (this.temperature < 0) ? 0 : (this.temperature > 100 ? 100 : this.temperature));
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        log.info('The temperature of the Meter can\'t be set!');
+        log.info("The temperature of the Meter can't be set!");
         callback();
       });
 
     this.humidityService = new hap.Service.HumiditySensor(name);
     this.humidityService.getCharacteristic(hap.Characteristic.CurrentRelativeHumidity)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info(name + ' current humidity: ' + this.humidity + '%');
+        log.info(name + " current humidity: " + this.humidity + "%");
         callback(undefined, this.humidity);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        log.info('The humidity of the Meter can\'t be set!');
+        log.info("The humidity of the Meter can't be set!");
         callback();
       });
 
     this.informationService = new hap.Service.AccessoryInformation()
-      .setCharacteristic(hap.Characteristic.Manufacturer, 'SwitchBot')
-      .setCharacteristic(hap.Characteristic.Model, 'SWITCHBOT-METERTH-S1')
+      .setCharacteristic(hap.Characteristic.Manufacturer, "SwitchBot")
+      .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-METERTH-S1")
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info(name, 'scanDuration:' + this.scanDuration.toString() + 'ms', 'scanInterval:' + this.scanInterval.toString() + 'ms');
+    log.info(name, "scanDuration:" + this.scanDuration.toString() + "ms", "scanInterval:" + this.scanInterval.toString() + "ms");
 
     const Switchbot = require('node-switchbot');
     const switchbot = new Switchbot();
@@ -105,7 +105,7 @@ export class Meter implements AccessoryPlugin {
    * Typical this only ever happens at the pairing process.
    */
   identify(): void {
-    this.log.info('Identify!');
+    this.log.info("Identify!");
   }
 
   /*
