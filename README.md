@@ -96,6 +96,9 @@ Please note that:
 3. The "opened" and "closed" directions of HomeKit are the same as those in Curtain and SwitchBot APP, but the percentage definitions are different. "Closed" is 0% in HomeKit but 100% in Curtain and APP.
 
 ## Release Note
+* v1.2.4 (2020-12-21)
+  * Support Homebridge config setting UI. (Thanks to [@donavanbecker](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/24))
+  * Fixed TypeError: this.config.devices is not iterable. (Thanks to [@donavanbecker](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/23))
 * v1.2.3 (2020-11-30)
   * Fixed the incorrect state of Bot in Home APP when control fails.
   * Modify log messages. (Thanks to [@dnicolson](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/15))
