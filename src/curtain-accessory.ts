@@ -6,9 +6,9 @@ import {
   HAP,
   Logging,
   Service,
-  CharacteristicEventTypes
-} from "homebridge";
-import { rejects } from "assert";
+  CharacteristicEventTypes,
+} from 'homebridge';
+import { rejects } from 'assert';
 
 export class Curtain implements AccessoryPlugin {
 
@@ -42,26 +42,24 @@ export class Curtain implements AccessoryPlugin {
     this.curtainService = new hap.Service.WindowCovering(name);
     this.curtainService.getCharacteristic(hap.Characteristic.CurrentPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current position of Curtain was returned: " + this.currentPosition + "%");
+        log.info('Current position of Curtain was returned: ' + this.currentPosition + '%');
         callback(undefined, this.currentPosition);
       });
 
     this.curtainService.getCharacteristic(hap.Characteristic.TargetPosition)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Target position of Curtain was returned: " + this.targetPosition + "%");
+        log.info('Target position of Curtain was returned: ' + this.targetPosition + '%');
         callback(undefined, this.targetPosition);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         this.targetPosition = value as number;
-        log.info("Target position of Curtain setting: " + this.targetPosition + "%");
+        log.info('Target position of Curtain setting: ' + this.targetPosition + '%');
         clearTimeout(this.moveTimer);
         if (this.targetPosition > this.currentPosition) {
           this.positionState = hap.Characteristic.PositionState.INCREASING;
-        }
-        else if (this.targetPosition < this.currentPosition) {
+        } else if (this.targetPosition < this.currentPosition) {
           this.positionState = hap.Characteristic.PositionState.DECREASING;
-        }
-        else {
+        } else {
           this.positionState = hap.Characteristic.PositionState.STOPPED;
         }
 
@@ -70,16 +68,15 @@ export class Curtain implements AccessoryPlugin {
           this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
           this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
           callback();
-        }
-        else {
+        } else {
           const SwitchBot = require('node-switchbot');
           const switchbot = new SwitchBot();
           switchbot.discover({ duration: this.scanDuration, model: 'c', quick: false }).then((device_list: any) => {
             log.info('Scan done.');
             let targetDevice: any = null;
-            for (let device of device_list) {
+            for (const device of device_list) {
               log.info(device.modelName, device.address);
-              if (device.address == this.bleMac) {
+              if (device.address === this.bleMac) {
                 targetDevice = device;
                 break;
               }
@@ -89,8 +86,7 @@ export class Curtain implements AccessoryPlugin {
               return new Promise((resolve, reject) => {
                 reject(new Error('No target device was found.'));
               });
-            }
-            else {
+            } else {
               log.info(targetDevice.modelName + ' (' + targetDevice.address + ') was found.');
               // Set event handers
               targetDevice.onconnect = () => {
@@ -107,8 +103,7 @@ export class Curtain implements AccessoryPlugin {
               let covertToDevicePosition = 0;
               if (!reverseDir) {
                 covertToDevicePosition = 100 - this.targetPosition;
-              }
-              else {
+              } else {
                 log.info('Reverse the "opened" and "closed" directions!');
                 covertToDevicePosition = this.targetPosition;
               }
@@ -116,7 +111,7 @@ export class Curtain implements AccessoryPlugin {
             }
           }).then(() => {
             log.info('Done.');
-            log.info("Target position of Curtain has been set to: " + this.targetPosition + "%");
+            log.info('Target position of Curtain has been set to: ' + this.targetPosition + '%');
             this.moveTimer = setTimeout(() => {
               // log.info("setTimeout", this.positionState.toString(), this.currentPosition.toString(), this.targetPosition.toString());
               this.currentPosition = this.targetPosition;
@@ -135,7 +130,7 @@ export class Curtain implements AccessoryPlugin {
               // this.curtainService?.getCharacteristic(hap.Characteristic.CurrentPosition).updateValue(this.currentPosition);
               this.curtainService?.getCharacteristic(hap.Characteristic.PositionState).updateValue(this.positionState);
             }, 1000);
-            log.info("Target position of Curtain failed to be set to: " + this.targetPosition + "%");
+            log.info('Target position of Curtain failed to be set to: ' + this.targetPosition + '%');
             callback();
           });
         }
@@ -143,16 +138,16 @@ export class Curtain implements AccessoryPlugin {
 
     this.curtainService.getCharacteristic(hap.Characteristic.PositionState)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("The position state of Curtain was returned: " + this.positionState);
+        log.info('The position state of Curtain was returned: ' + this.positionState);
         callback(undefined, this.positionState);
       });
 
     this.informationService = new hap.Service.AccessoryInformation()
-      .setCharacteristic(hap.Characteristic.Manufacturer, "SwitchBot")
-      .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-CURTAIN-W0701600")
+      .setCharacteristic(hap.Characteristic.Manufacturer, 'SwitchBot')
+      .setCharacteristic(hap.Characteristic.Model, 'SWITCHBOT-CURTAIN-W0701600')
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info("Curtain '%s' created!", name);
+    log.info('Curtain \'%s\' created!', name);
   }
 
   /*
@@ -160,7 +155,7 @@ export class Curtain implements AccessoryPlugin {
    * Typical this only ever happens at the pairing process.
    */
   identify(): void {
-    this.log.info("Identify!");
+    this.log.info('Identify!');
   }
 
   /*

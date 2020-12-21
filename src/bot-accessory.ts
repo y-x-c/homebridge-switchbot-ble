@@ -6,9 +6,9 @@ import {
   HAP,
   Logging,
   Service,
-  CharacteristicEventTypes
-} from "homebridge";
-import { rejects } from "assert";
+  CharacteristicEventTypes,
+} from 'homebridge';
+import { rejects } from 'assert';
 
 export class Bot implements AccessoryPlugin {
 
@@ -34,27 +34,27 @@ export class Bot implements AccessoryPlugin {
     this.botService = new hap.Service.Switch(name);
     this.botService.getCharacteristic(hap.Characteristic.On)
       .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current state of Bot was returned: " + (this.switchOn ? "ON" : "OFF"));
+        log.info('Current state of Bot was returned: ' + (this.switchOn ? 'ON' : 'OFF'));
         callback(undefined, this.switchOn);
       })
       .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
         const targetState = value as boolean;
         clearTimeout(this.runTimer);
         if (targetState === this.switchOn) {
-          log.info("Target state of Bot has not changed: " + (this.switchOn ? "ON" : "OFF"));
+          log.info('Target state of Bot has not changed: ' + (this.switchOn ? 'ON' : 'OFF'));
           this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
           callback();
         }
         // Target state has been changed.
-        log.info("Target state of Bot setting: " + (targetState ? "ON" : "OFF"));
+        log.info('Target state of Bot setting: ' + (targetState ? 'ON' : 'OFF'));
         const SwitchBot = require('node-switchbot');
         const switchbot = new SwitchBot();
         switchbot.discover({ duration: this.scanDuration, model: 'H', quick: false }).then((device_list: any) => {
           log.info('Scan done.');
           let targetDevice: any = null;
-          for (let device of device_list) {
+          for (const device of device_list) {
             // log.info(device.modelName, device.address);
-            if (device.address == this.bleMac) {
+            if (device.address === this.bleMac) {
               targetDevice = device;
               break;
             }
@@ -64,8 +64,7 @@ export class Bot implements AccessoryPlugin {
             return new Promise((resolve, reject) => {
               reject(new Error('No device was found.'));
             });
-          }
-          else {
+          } else {
             log.info(targetDevice.modelName + ' (' + targetDevice.address + ') was found.');
             // Set event handers
             targetDevice.onconnect = () => {
@@ -77,8 +76,7 @@ export class Bot implements AccessoryPlugin {
             log.info('Bot is running...');
             if (targetState) {
               return targetDevice.turnOn();
-            }
-            else {
+            } else {
               return targetDevice.turnOff();
             }
           }
@@ -88,24 +86,24 @@ export class Bot implements AccessoryPlugin {
           this.runTimer = setTimeout(() => {
             this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
           }, 500);
-          log.info("Bot state has been set to: " + (this.switchOn ? "ON" : "OFF"));
+          log.info('Bot state has been set to: ' + (this.switchOn ? 'ON' : 'OFF'));
           callback();
         }).catch((error: any) => {
           log.error(error);
           this.runTimer = setTimeout(() => {
             this.botService?.getCharacteristic(hap.Characteristic.On).updateValue(this.switchOn);
           }, 500);
-          log.info("Bot state failed to be set to: " + (targetState ? "ON" : "OFF"));
+          log.info('Bot state failed to be set to: ' + (targetState ? 'ON' : 'OFF'));
           callback();
         });
       });
 
     this.informationService = new hap.Service.AccessoryInformation()
-      .setCharacteristic(hap.Characteristic.Manufacturer, "SwitchBot")
-      .setCharacteristic(hap.Characteristic.Model, "SWITCHBOT-S1")
+      .setCharacteristic(hap.Characteristic.Manufacturer, 'SwitchBot')
+      .setCharacteristic(hap.Characteristic.Model, 'SWITCHBOT-S1')
       .setCharacteristic(hap.Characteristic.SerialNumber, this.bleMac);
 
-    log.info("Bot '%s' created!", name);
+    log.info('Bot \'%s\' created!', name);
   }
 
   /*
@@ -113,7 +111,7 @@ export class Bot implements AccessoryPlugin {
    * Typical this only ever happens at the pairing process.
    */
   identify(): void {
-    this.log.info("Identify!");
+    this.log.info('Identify!');
   }
 
   /*
