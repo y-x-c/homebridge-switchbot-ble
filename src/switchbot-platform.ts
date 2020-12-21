@@ -59,35 +59,35 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
   accessories(callback: (foundAccessories: AccessoryPlugin[]) => void): void {
     let deviceList = [];
     if (this.config.devices) {
-    for (var device of this.config.devices) {
-      // this.log.info(device.type);
-      // this.log.info(device.name);
-      // this.log.info(device.bleMac);
-      // this.log.info(device.scanDuration, typeof device.scanDuration);
-      let scanDuration: number = device.scanDuration || 1000;
-      switch (device.type) {
-        case 'bot':
-          deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
-          break;
-        case 'curtain':
-          const reverseDir: boolean = device.reverseDir || false;
-          const moveTime: number = device.moveTime || 2000;
-          deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, reverseDir, moveTime));
-          break;
-        case 'meter':
-          let scanInterval: number = device.scanInterval || 60000;
-          if (scanInterval < scanDuration) {
-            scanInterval = scanDuration + 1000;
-          }
-          deviceList.push(new Meter(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, scanInterval));
-          break;
-        default:
-          break;
+      for (var device of this.config.devices) {
+        // this.log.info(device.type);
+        // this.log.info(device.name);
+        // this.log.info(device.bleMac);
+        // this.log.info(device.scanDuration, typeof device.scanDuration);
+        let scanDuration: number = device.scanDuration || 1000;
+        switch (device.type) {
+          case 'bot':
+            deviceList.push(new Bot(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration));
+            break;
+          case 'curtain':
+            const reverseDir: boolean = device.reverseDir || false;
+            const moveTime: number = device.moveTime || 2000;
+            deviceList.push(new Curtain(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, reverseDir, moveTime));
+            break;
+          case 'meter':
+            let scanInterval: number = device.scanInterval || 60000;
+            if (scanInterval < scanDuration) {
+              scanInterval = scanDuration + 1000;
+            }
+            deviceList.push(new Meter(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, scanInterval));
+            break;
+          default:
+            break;
+        }
       }
+    } else {
+      this.log.error('No Device Set In Config')
     }
-  } else {
-    this.log.error('No Device Set In Config')
-  }
     this.log("Device amount:", deviceList.length.toString());
     callback(deviceList);
   }
