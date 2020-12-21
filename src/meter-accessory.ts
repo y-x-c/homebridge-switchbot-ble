@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   AccessoryPlugin,
   CharacteristicGetCallback,
@@ -6,7 +8,7 @@ import {
   HAP,
   Logging,
   Service,
-  CharacteristicEventTypes
+  CharacteristicEventTypes,
 } from "homebridge";
 import { rejects } from "assert";
 

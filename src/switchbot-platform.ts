@@ -1,4 +1,14 @@
-import { AccessoryPlugin, API, HAP, Logging, PlatformConfig, StaticPlatformPlugin, } from "homebridge";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-var */
+/* eslint-disable no-case-declarations */
+/* eslint-disable prefer-const */
+import { AccessoryPlugin, 
+  API, 
+  HAP, 
+  Logging, 
+  PlatformConfig, 
+  StaticPlatformPlugin, 
+} from "homebridge";
 import { Bot } from "./bot-accessory";
 import { Curtain } from "./curtain-accessory";
 import { Meter } from "./meter-accessory";
@@ -86,7 +96,7 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
         }
       }
     } else {
-      this.log.error('No Device Set In Config')
+      this.log.error('No Device Set In Config');
     }
     this.log("Device amount:", deviceList.length.toString());
     callback(deviceList);

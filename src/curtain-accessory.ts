@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable eqeqeq */
+/* eslint-disable prefer-const */
+/* eslint-disable brace-style */
 import {
   AccessoryPlugin,
   CharacteristicGetCallback,
@@ -6,7 +10,7 @@ import {
   HAP,
   Logging,
   Service,
-  CharacteristicEventTypes
+  CharacteristicEventTypes,
 } from "homebridge";
 import { rejects } from "assert";
 
