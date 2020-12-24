@@ -95,25 +95,6 @@ Please note that:
 2. Restart HomeBridge after updating the config file.
 3. The "opened" and "closed" directions of HomeKit are the same as those in Curtain and SwitchBot APP, but the percentage definitions are different. "Closed" is 0% in HomeKit but 100% in Curtain and APP.
 
-## Release Note
-* v1.2.4 (2020-12-21)
-  * Support Homebridge config setting UI. (Thanks to [@donavanbecker](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/24))
-  * Fixed TypeError: this.config.devices is not iterable. (Thanks to [@donavanbecker](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/23))
-* v1.2.3 (2020-11-30)
-  * Fixed the incorrect state of Bot in Home APP when control fails.
-  * Modify log messages. (Thanks to [@dnicolson](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/15))
-* v1.2.2 (2020-11-19)
-  * Fixed Curtain state will not be updated in the Home APP.
-* v1.2.1 (2020-11-12)
-  * Get temperature and humidity from Meter advertising periodically.
-* v1.2.0 (2020-11-6)
-  * Add option for inverted curtain position. (Thanks to [@whatUwant](https://github.com/SwitchBot/homebridge-switchbot-ble/pull/4))
-  * Fixed HomeKit control direction reversal issue.
-* v1.1.0 (2020-10-29)
-  * Add support for Curtain.
-* v1.0.1 (2020-10-22)
-  * First public release, supports Bot.
-
 ## Community
 
 * [SwitchBot (Official website)](https://www.switch-bot.com/)
