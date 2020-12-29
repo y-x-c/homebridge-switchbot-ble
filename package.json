@@ -1,5 +1,5 @@
 {
-  "name": "@switchbot/homebridge-switchbot-ble",
+  "name": "@switchbot/homebridge-switchbot-ble-fakegato",
   "version": "1.2.7",
   "description": "Homebridge integration for SwitchBot BLE series products",
   "author": "SwitchBot <support@wondertechlabs.com> (https://github.com/SwitchBot)",
@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@abandonware/noble": "^1.9.2-10",
+    "fakegato-history": "^0.6.1",
     "node-switchbot": "0.2.0"
   }
 }

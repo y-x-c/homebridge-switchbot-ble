@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   AccessoryPlugin,
+  API,
   CharacteristicGetCallback,
   CharacteristicSetCallback,
   CharacteristicValue,
@@ -24,17 +25,28 @@ export class Meter implements AccessoryPlugin {
 
   // This property must be existent!!
   name: string;
+  displayName: string;
 
   private readonly temperatureSercice: Service;
   private readonly humidityService: Service;
   private readonly informationService: Service;
+  private loggingService;
 
-  constructor(hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, scanInterval: number) {
+  constructor(homebridge: API, hap: HAP, log: Logging, name: string, bleMac: string, scanDuration: number, scanInterval: number) {
     this.log = log;
     this.name = name;
+    this.displayName = name;
     this.bleMac = bleMac;
     this.scanDuration = scanDuration;
     this.scanInterval = scanInterval;
+
+    var FakeGatoHistoryService = require('fakegato-history')(homebridge);
+    this.loggingService = new FakeGatoHistoryService("weather", this, {
+    disableTimer: true,
+    storage:'googleDrive',
+    forlder:'FakeGato',
+    keyPath:'/home/pi/fakegato/'
+    });
 
     this.temperatureSercice = new hap.Service.TemperatureSensor(name);
     this.temperatureSercice.getCharacteristic(hap.Characteristic.CurrentTemperature)
@@ -74,6 +86,8 @@ export class Meter implements AccessoryPlugin {
       // log.info("Humidity:", ad.serviceData.humidity);
       this.temperature = ad.serviceData.temperature.c;
       this.humidity = ad.serviceData.humidity;
+      this.loggingService.addEntry({time: Math.round(new Date().valueOf() / 1000), temp: this.temperature, humidity: this.humidity});
+
     };
 
     switchbot.startScan({
@@ -119,6 +133,7 @@ export class Meter implements AccessoryPlugin {
       this.informationService,
       this.temperatureSercice,
       this.humidityService,
+      this.loggingService,
     ];
   }
 

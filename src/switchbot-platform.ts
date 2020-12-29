@@ -39,9 +39,11 @@ const PLATFORM_NAME = "SwitchBotPlatform";
  * like this for example and used to access all exported variables and classes from HAP-NodeJS.
  */
 let hap: HAP;
+let homebridge: API;
 
 export = (api: API) => {
   hap = api.hap;
+  homebridge = api;
 
   api.registerPlatform(PLATFORM_NAME, SwitchBotPlatform);
 };
@@ -89,7 +91,7 @@ class SwitchBotPlatform implements StaticPlatformPlugin {
             if (scanInterval < scanDuration) {
               scanInterval = scanDuration + 1000;
             }
-            deviceList.push(new Meter(hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, scanInterval));
+            deviceList.push(new Meter(homebridge, hap, this.log, device.name, device.bleMac.toLowerCase(), scanDuration, scanInterval));
             break;
           default:
             break;
