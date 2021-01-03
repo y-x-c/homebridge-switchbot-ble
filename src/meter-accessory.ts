@@ -42,6 +42,7 @@ export class Meter implements AccessoryPlugin {
 
     var FakeGatoHistoryService = require('fakegato-history')(homebridge);
     this.loggingService = new FakeGatoHistoryService("weather", this, {
+    size: 60*24*30,
     disableTimer: true,
     storage:'googleDrive',
     forlder:'FakeGato',
@@ -87,7 +88,8 @@ export class Meter implements AccessoryPlugin {
       this.temperature = ad.serviceData.temperature.c;
       this.humidity = ad.serviceData.humidity;
       this.loggingService.addEntry({time: Math.round(new Date().valueOf() / 1000), temp: this.temperature, humidity: this.humidity});
-
+     this.temperatureSercice.updateCharacteristic(hap.Characteristic.CurrentTemperature, (this.temperature < 0) ? 0 : (this.temperature > 100 ? 100 : this.temperature))
+     this.humidityService.updateCharacteristic(hap.Characteristic.CurrentRelativeHumidity, this.humidity)
     };
 
     switchbot.startScan({

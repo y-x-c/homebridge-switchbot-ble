@@ -14,7 +14,7 @@ import { Curtain } from "./curtain-accessory";
 import { Meter } from "./meter-accessory";
 import { off } from "process";
 
-const PLATFORM_NAME = "SwitchBotPlatform";
+const PLATFORM_NAME = "SwitchBotPlatformFakegato";
 
 /*
  * IMPORTANT NOTICE
